@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.less';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Provider } from 'react-redux';
 import store from './store';
