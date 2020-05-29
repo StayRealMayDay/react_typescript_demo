@@ -1,5 +1,5 @@
 import Axios from 'axios';
-const baseURL = process.env.NODE_ENV == 'development' ? "http://www.baidu.com" : "http://www.baidu.com";
+const baseURL = process.env.NODE_ENV === 'development' ? "" : "";
 
 const axios = Axios.create({
     timeout: 7000,
@@ -79,8 +79,8 @@ Axios.interceptors.response.use(
         }
     }
 );
-function post(url: string, params: any) {
-    return new Promise((resolve, reject) => {
+function post<T>(url: string, params: any) {
+    return new Promise<T & {errorCode: number, errorMessage: string}>((resolve, reject) => {
         axios.post(url, JSON.stringify(params))
             .then(res => {
                 resolve(res.data);
@@ -91,8 +91,8 @@ function post(url: string, params: any) {
     });
 }
 
-function get(url: string, params: any) {
-    return new Promise((resolve, reject) => {
+function get<T>(url: string, params?: any) {
+    return new Promise<T & {errorCode: number, errorMessage: string}>((resolve, reject) => {
         axios.get(url, {
             params: params
         }).then(res => {
