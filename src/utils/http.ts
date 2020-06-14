@@ -6,7 +6,24 @@ const axios = Axios.create({
     baseURL: baseURL,
 });
 
-Axios.interceptors.response.use(
+
+
+axios.interceptors.request.use(
+    (config) => {
+        const authorization = localStorage.getItem("Authorization");
+        if (authorization) {
+            config.headers.Authorization = authorization
+        } else {
+        }
+        return config
+    },
+    (err) => {
+        return Promise.reject(err)
+    }
+)
+
+
+axios.interceptors.response.use(
     response => {
         // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据     
         // 否则的话抛出错误
@@ -80,7 +97,7 @@ Axios.interceptors.response.use(
     }
 );
 function post<T>(url: string, params: any) {
-    return new Promise<T & {errorCode: number, errorMessage: string}>((resolve, reject) => {
+    return new Promise<T & { errorCode: number, errorMessage: string }>((resolve, reject) => {
         axios.post(url, JSON.stringify(params))
             .then(res => {
                 resolve(res.data);
@@ -92,7 +109,7 @@ function post<T>(url: string, params: any) {
 }
 
 function get<T>(url: string, params?: any) {
-    return new Promise<T & {errorCode: number, errorMessage: string}>((resolve, reject) => {
+    return new Promise<T & { errorCode: number, errorMessage: string }>((resolve, reject) => {
         axios.get(url, {
             params: params
         }).then(res => {
